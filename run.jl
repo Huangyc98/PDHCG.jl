@@ -49,7 +49,7 @@ for (i, file_name) in enumerate(file_names)
     println("Start solving the problem: $i, named: $file_name")
     ins_path = joinpath(folder_path, file_name)
     try
-        PDHCG.run_solver(ins_path, save_path, GPU_on, GPU_id, time_limit, relat)
+        run_solver(ins_path, save_path, GPU_on, GPU_id, time_limit, relat)
     catch e
         println("Failed to solve $file_name due to error: $e")
     end
