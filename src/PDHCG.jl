@@ -12,6 +12,11 @@ import Statistics
 import StatsBase
 import StructTypes
 using LinearAlgebra
+using Random
+using SparseArrays
+
+
+include("problem_gen.jl")
 
 const Diagonal = LinearAlgebra.Diagonal
 const diag = LinearAlgebra.diag

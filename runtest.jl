@@ -13,7 +13,7 @@ relat = 1e-3                   # The relative tolerance for the solver
 
 # Function to run the solver
 function run_solver(file_name, use_gpu, time_limit=3600, relat=1e-6, GPU_id=0)
-    project_scr = ["--project=scripts", "./test/solve_test.jl"]
+    project_scr = ["--project", "./test/solve_test.jl"]
     time_limit_arg = ["--time_sec_limit", "$time_limit"]
     relat_arg = ["--tolerance", "$relat"]
     gpu_option = use_gpu == 1 ? ["--use_gpu", "1"] : ["--use_gpu", "0"]

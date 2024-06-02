@@ -1,8 +1,8 @@
 using PDHCG
 #-------------Running Parameters--------------
 #-----------------GPU setting-----------------
-GPU_on = 0                     # 1: use GPU; 0: use CPU
-GPU_id = 0                     # The GPU id if there are multiple GPUs (if there is only one GPU, set it to 0)
+GPU_on = 1                     # 1: use GPU; 0: use CPU
+GPU_id = 2                     # The GPU id if there are multiple GPUs (if there is only one GPU, set it to 0)
 #-----------------Task setting----------------
 folder_path = "./example/"     # The folder path of the problems
 time_limit = 3600              # The time limit for each problem
@@ -20,7 +20,7 @@ function run_solver(file_path, save_path, use_gpu=0, GPU_id=0, time_limit=3600, 
      `time_limit`: Sets the maximum allowed time for the solver to run in seconds (default: 3600).
      `relat`: Specifies the solver's relative tolerance level (default: 1e-6).
      "
-    project_scr = ["--project=scripts",  "./scripts/solve.jl"]
+    project_scr = ["--project",  "./scripts/solve.jl"]
     time_limit_arg = ["--time_sec_limit", "$time_limit"]
     relat_arg = ["--tolerance", "$relat"]
     gpu_option = use_gpu == 1 ? ["--use_gpu", "1"] : ["--use_gpu", "0"]

@@ -468,6 +468,7 @@ function optimize_gpu(
     params::PdhgParameters,
     original_problem::QuadraticProgrammingProblem,
 )
+    original_problem = generate_problem_data_randomQP(60000)
     validate(original_problem)
     qp_cache = cached_quadratic_program_info(original_problem)
     original_norm_Q = estimate_maximum_singular_value(original_problem.objective_matrix)
