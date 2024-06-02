@@ -497,10 +497,12 @@ function optimize_gpu(
 
     if stopkkt_Q 
 
-        scaled_Q =
-        sparse(Diagonal(1 ./ scaled_problem.variable_rescaling)) *
-        original_problem.objective_matrix *
-        sparse(Diagonal(1 ./ scaled_problem.variable_rescaling))
+        dim = length(scaled_problem.variable_rescaling)
+        rowval = collect(1:dim)
+        colptr = collect(1:dim+1)
+        nzval = 1 ./ scaled_problem.variable_rescaling
+        diag_tmp = SparseMatrixCSC(dim, dim, colptr, rowval, nzval)
+        scaled_Q = diag_tmp * original_problem.objective_matrix * diag_tmp
 
         d_objective_matrix = CUDA.CUSPARSE.CuSparseMatrixCSR(original_problem.objective_matrix)
         d_scaled_Q = CUDA.CUSPARSE.CuSparseMatrixCSR(scaled_Q)
