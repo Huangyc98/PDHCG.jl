@@ -86,14 +86,20 @@ An array with the l2 norm of a matrix over the given dimension.
 function l2_norm(matrix::SparseMatrixCSC{Float64,Int64}, dimension::Int64)
     scale_factor = vec(maximum(abs, matrix, dims = dimension))
     scale_factor[iszero.(scale_factor)] .= 1.0
+    
+    dim = length(scale_factor)
+    rowval = collect(1:dim)
+    colptr = collect(1:dim+1)
+    diag_tmp = SparseMatrixCSC(dim, dim, colptr, rowval, 1 ./ scale_factor)
+
     if dimension == 1
-        scaled_matrix = matrix * sparse(Diagonal(1 ./ scale_factor))
+        scaled_matrix = matrix * diag_tmp
         return scale_factor .*
             vec(sqrt.(sum(t -> t^2, scaled_matrix, dims = dimension)))
     end
 
     if dimension == 2
-        scaled_matrix = sparse(Diagonal(1 ./ scale_factor)) * matrix
+        scaled_matrix = diag_tmp * matrix
         return scale_factor .*
             vec(sqrt.(sum(t -> t^2, scaled_matrix, dims = dimension)))
     end
@@ -475,10 +481,12 @@ function scale_problem(
     problem.objective_vector ./= variable_rescaling
     problem.objective_vector ./= constant_rescaling
 
-    problem.objective_matrix =
-        sparse(Diagonal(1 ./ variable_rescaling)) *
-        problem.objective_matrix *
-        sparse(Diagonal(1 ./ variable_rescaling))
+    dim = length(variable_rescaling)
+    rowval = collect(1:dim)
+    colptr = collect(1:dim+1)
+    diag_tmp_var = SparseMatrixCSC(dim, dim, colptr, rowval, 1 ./ variable_rescaling)
+
+    problem.objective_matrix = diag_tmp_var * problem.objective_matrix * diag_tmp_var
 
     problem.variable_upper_bound .*= variable_rescaling
     problem.variable_lower_bound .*= variable_rescaling
@@ -488,10 +496,10 @@ function scale_problem(
     problem.right_hand_side ./= constraint_rescaling
     problem.right_hand_side ./= constant_rescaling
 
+    diag_tmp_constr = SparseMatrixCSC(length(constraint_rescaling), length(constraint_rescaling), colptr, rowval, 1 ./ constraint_rescaling)
+    
     problem.constraint_matrix =
-        sparse(Diagonal(1 ./ constraint_rescaling)) *
-        problem.constraint_matrix *
-        sparse(Diagonal(1 ./ variable_rescaling))
+    diag_tmp_constr * problem.constraint_matrix * diag_tmp_var
 
     problem.constraint_matrix_t = problem.constraint_matrix' #
     return
