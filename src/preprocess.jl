@@ -496,7 +496,8 @@ function scale_problem(
     problem.right_hand_side ./= constraint_rescaling
     problem.right_hand_side ./= constant_rescaling
 
-    diag_tmp_constr = SparseMatrixCSC(length(constraint_rescaling), length(constraint_rescaling), colptr, rowval, 1 ./ constraint_rescaling)
+    dim_con = length(constraint_rescaling)
+    diag_tmp_constr = SparseMatrixCSC(dim_con,dim_con, collect(1:dim_con+1), collect(1:dim_con), 1 ./ constraint_rescaling)
     
     problem.constraint_matrix =
     diag_tmp_constr * problem.constraint_matrix * diag_tmp_var

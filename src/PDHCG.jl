@@ -12,6 +12,8 @@ import Statistics
 import StatsBase
 import StructTypes
 using LinearAlgebra
+using Random
+using SparseArrays
 
 const Diagonal = LinearAlgebra.Diagonal
 const diag = LinearAlgebra.diag
@@ -32,6 +34,7 @@ const sample = StatsBase.sample
 const mul! = LinearAlgebra.mul!
 const ThreadPerBlock = 128
 
+include("problem_gen.jl")
 include("quadratic_programming.jl")
 include("solve_log.jl")
 include("quadratic_programming_io.jl")
