@@ -3,6 +3,7 @@
 This repository contains the official implementation of the restarted Primal-Dual Hybrid Conjugate Gradient (PDHCG) algorithm for solving large-scale convex quadratic programming problems.
 
 Link: [[arXiv](https://arxiv.org/abs/2405.16160)]
+Python Interface: [[PDHCG-Python](https://github.com/Lhongpei/PDHCG-Python)]
 
 Part of the code utilizes [PDQP.jl](https://github.com/jinwen-yang/PDQP.jl) by Jinwen Yang and Haihao Lu.
 
